@@ -9,6 +9,8 @@ import '../pages/patient_photo_screen.dart';
 import '../services/api_service.dart';
 import '../services/settings_service.dart';
 import '../pages/doctor_conclusion_page.dart';
+import '../server.dart'; // добавляем импорт сервера
+
 
 class DesktopHome extends StatefulWidget {
   const DesktopHome({super.key});
@@ -37,11 +39,16 @@ class _DesktopHomeState extends State<DesktopHome> {
   final TextEditingController _phoneCtrl = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    _initSettingsAndLoad();
-	_loadBusyDates();
-  }
+void initState() {
+  super.initState();
+
+  // 🌐 запускаем локальный сервер в фоне
+  unawaited(startServer());
+
+  _initSettingsAndLoad();
+  _loadBusyDates();
+}
+
 
   Future<void> _initSettingsAndLoad() async {
     try {
